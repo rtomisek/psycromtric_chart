@@ -1,6 +1,6 @@
 #! /usr/bin/Rscript
 #
-# Copyright (C) 2025 by [copyright holder] <[email]>
+# Copyright (C) 2025 by Randall Tomisek <rtomisek@gmail.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
 #
@@ -14,7 +14,7 @@
 # an R script to generate psychrometric charts
 
 ################################################################################
-#    EDIT TO YOUR PARAMETERS FOR THE CHART                                     #
+#    USER PARAMETERS FOR YOUR CHART                                     #
 
 P <- 101325                    # pascals, pressure for chart, usually 1 atm
 
@@ -26,16 +26,17 @@ cut.frac <- 3
 
 rh.values <- c(0.8, 0.6, 0.4, 0.2, 0.1)    # Enter rh fractions you want plotted
                                            # The fraction 1.0 is aways plotted automatically
-VspNote <- TRUE
+
+VspNote <- TRUE                # A formula to calculate specific volume
 
 
-Tstep.l <- 5.0                 # 'x' axis for labels 
-Tstep.g <- 1.0                 # 'x' for grid
-nWstep.l <- 10                 # for 'y' axis labels
-nWstep.g <- 20
-nHsteps <- 20
+Tstep.l <- 5.0                 # 'x' axis ticks spacing for labels 
+Tstep.g <- 1.0                 # 'x' axis ticks spacing for grid
+nWstep.l <- 10                 # number of 'y' axis label ticks
+nWstep.g <- 20                 # number of 'y' axis gridlines 
+nHsteps <- 20                  # spacing if labeled enthalpy lines
 
-lw <- 0.01                                 # for most curves
+lw <- 0.01                     # for most curves
 
 #    End of user parameters                                                    #
 ################################################################################
@@ -110,7 +111,7 @@ h <- function( t, W ) {
 # preliminary calculations and useful function definitions
 
 MaxW <- Wrh( Tmax, 1.0, P )                    # Estimate Wmax
-Wmax <- MaxW/cut.frac                          # 
+Wmax <- MaxW/cut.frac                          # and
 Wmax <- as.integer(Wmax*10000+0.5)/10000       # round off to 4 decimal places
 
 Wstep.l <- as.integer(10000*Wmax/nWstep.l)/10000
@@ -170,7 +171,7 @@ for( r in rh.values ) {
     pt <- uniroot( function(x) rh.ref(x)-vWrh(x, r, P), c(Tmin,Tmax), tol=0.001 )
     s <- ( vWrh(pt[[1]]-5.0, r, P)-vWrh(pt[[1]]+0.0, r, P))/5         # Local slope of line. AV 5
     a <- -atan(s*sr)*180/pi                                           # The angle for the label
-    lb <- paste0( "rh=", format(r*100), "%" )
+    lb <- paste0( "rh=", format(r*100), "%" )                         # label string
     text( x=pt[[1]]+rh.x.offset, y=vWrh(pt[[1]], r, P)-rh.y.offset, label=lb, cex=0.5, font=3, srt=a )
 }
 

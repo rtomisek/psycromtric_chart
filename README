@@ -1,9 +1,16 @@
 A program to demonstrate the plotting of a useable psychometric chart 
 using R.
+
 The neccessary psycrometric functions are included in the script to 
 minimize dependecies.
 
-USAGE : Just running the script should generate the default chart.
+I have added chart4.R which is much easier to use than chart2.R. It
+automatically calculates a lot of things like labels and label positions.  
+USAGE : Go to user parameters section near the top of the script. Enter
+as R variables as indicated.
+
+
+USAGE chart2.R : Just running the script should generate the default chart.
 To make your own chart just copy the script to a useful name and
 edit it as you wish.
 
